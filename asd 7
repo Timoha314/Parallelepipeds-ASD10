@@ -1,0 +1,24 @@
+def can_nest(box1, box2):
+    return all(box1[i] <= box2[i] for i in range(len(box1)))
+
+def nested_boxes_lis(boxes):
+    for i in range(len(boxes)):
+        boxes[i].sort()
+    boxes.sort()
+    n = len(boxes)
+    lis = [1] * n
+    for i in range(n):
+        for j in range(i):
+            if can_nest(boxes[j], boxes[i]):
+                lis[i] = max(lis[i], lis[j] + 1)
+    return max(lis)
+
+file = open('input.txt', 'r')
+dim, count = map(int, file.readline().split())
+boxes = [list(map(int, file.readline().split())) for _ in range(count)]
+file.close()
+
+result = nested_boxes_lis(boxes)
+with open('output.txt', 'w') as output_file:
+    output_file.write(str(result))
+print(result)
